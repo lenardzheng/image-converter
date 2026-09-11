@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO 核心标签 -->
+    <title>Free Online Image Converter & Compressor - PNG, JPG, WebP</title>
+    <meta name="description" content="Free online image converter and compressor. Convert PNG to JPG, WebP to PNG, or compress image size instantly in your browser. Fast, free, and 100% secure.">
+    <meta name="keywords" content="image converter, png to jpg, webp to png, image compressor, online image converter, photo optimizer">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-600">MediaTools <span class="text-gray-500 text-sm font-normal">| Image Converter</span></h1>
+            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">100% Client-Side Protection</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Free Online Image Converter & Compressor</h2>
+            <p class="text-gray-600">Convert image formats (PNG, JPG, WebP) and optimize file size easily. No server upload required.</p>
+        </div>
+
+        <!-- Upload Box -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border-2 border-dashed border-gray-300 hover:border-indigo-500 transition text-center cursor-pointer mb-6" id="drop-zone" onclick="document.getElementById('image-input').click()">
+            <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <p class="text-sm font-medium text-gray-700">Click to upload or drag & drop an image here</p>
+            <p class="text-xs text-gray-400 mt-1">Supports PNG, JPG, JPEG, WebP</p>
+            <input type="file" id="image-input" accept="image/png, image/jpeg, image/webp" class="hidden" onchange="handleImageUpload(event)">
+        </div>
+
+        <!-- Options Container (Hidden by default) -->
+        <div id="options-panel" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Target Format -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Convert To Format:</label>
+                    <select id="target-format" class="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <option value="image/jpeg">JPG / JPEG</option>
+                        <option value="image/png">PNG</option>
+                        <option value="image/webp">WebP</option>
+                    </select>
+                </div>
+
+                <!-- Quality Control -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-semibold text-gray-700">Image Quality / Compression:</label>
+                        <span id="quality-val" class="text-sm font-bold text-indigo-600">80%</span>
+                    </div>
+                    <input type="range" id="quality-range" min="10" max="100" value="80" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" oninput="document.getElementById('quality-val').innerText = this.value + '%'">
+                </div>
+            </div>
+
+            <button onclick="processImage()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow transition">
+                Convert & Compress Image
+            </button>
+        </div>
+
+        <!-- Result Preview Area -->
+        <div id="result-panel" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6 hidden">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Processed Image Result</h3>
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <img id="preview-img" class="max-h-64 max-w-full rounded-lg object-contain border border-gray-200" alt="Preview">
+                <div class="flex-1 w-full text-center md:text-left">
+                    <p class="text-sm text-gray-600 mb-1">Original Size: <span id="original-size" class="font-semibold text-gray-800">0 KB</span></p>
+                    <p class="text-sm text-gray-600 mb-4">New Size: <span id="new-size" class="font-bold text-green-600">0 KB</span></p>
+                    <a id="download-link" download="converted-image" class="inline-block px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow transition">
+                        Download Image
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Content Article Section -->
+        <section class="mt-12 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+            <h3 class="text-lg font-bold text-gray-900 mb-3">Fast & Secure Online Image Converter</h3>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                Looking for a quick way to convert PNG images to JPG or optimize WebP files for better web performance? Our online image converter allows you to transform and compress images instantly right in your browser.
+            </p>
+            <h3 class="text-lg font-bold text-gray-900 mb-3">100% Private & Safe</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+                Unlike traditional converters, your photos are never sent to a remote server. Everything is processed locally using HTML5 Canvas technology on your device, guaranteeing total privacy and instant conversion speed.
+            </p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 mt-12 text-center text-xs text-gray-500">
+        &copy; 2026 MediaTools. All rights reserved. Free Online Browser-based Tools.
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        let loadedImage = null;
+        let originalFileSize = 0;
+        let originalFileName = "";
+
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            originalFileSize = file.size;
+            originalFileName = file.name.substring(0, file.name.lastIndexOf('.')) || 'image';
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    loadedImage = img;
+                    document.getElementById('options-panel').classList.remove('hidden');
+                    document.getElementById('result-panel').classList.add('hidden');
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function processImage() {
+            if (!loadedImage) return;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = loadedImage.width;
+            canvas.height = loadedImage.height;
+            const ctx = canvas.getContext('2d');
+
+            // 如果转 JPG，先画白色背景（避免 PNG 透明图变黑）
+            const targetFormat = document.getElementById('target-format').value;
+            if (targetFormat === 'image/jpeg') {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            ctx.drawImage(loadedImage, 0, 0);
+
+            const quality = parseFloat(document.getElementById('quality-range').value) / 100;
+            const dataUrl = canvas.toDataURL(targetFormat, quality);
+
+            // 更新预览和下载信息
+            const previewImg = document.getElementById('preview-img');
+            previewImg.src = dataUrl;
+
+            // 计算转化后的文件大小
+            const head = 'data:' + targetFormat + ';base64,';
+            const sizeInBytes = Math.round((dataUrl.length - head.length) * 3 / 4);
+
+            document.getElementById('original-size').innerText = (originalFileSize / 1024).toFixed(1) + ' KB';
+            document.getElementById('new-size').innerText = (sizeInBytes / 1024).toFixed(1) + ' KB';
+
+            const downloadLink = document.getElementById('download-link');
+            downloadLink.href = dataUrl;
+            
+            // 拼接文件名后缀
+            let ext = 'jpg';
+            if (targetFormat === 'image/png') ext = 'png';
+            if (targetFormat === 'image/webp') ext = 'webp';
+            downloadLink.download = `${originalFileName}_converted.${ext}`;
+
+            document.getElementById('result-panel').classList.remove('hidden');
+        }
+
+        // 拖拽文件支持
+        const dropZone = document.getElementById('drop-zone');
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500'); });
+        dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-indigo-500'); });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-indigo-500');
+            if (e.dataTransfer.files.length) {
+                document.getElementById('image-input').files = e.dataTransfer.files;
+                handleImageUpload({ target: { files: e.dataTransfer.files } });
+            }
+        });
+    </script>
+</body>
+</html>
